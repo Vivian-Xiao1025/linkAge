@@ -103,16 +103,16 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container2,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_settings, container2, false);
         missionRecyclerView = fragmentView.findViewById(R.id.missionRV);
         missionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         missionRecyclerView.setHasFixedSize(true);
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Mission"); //new path
+        databaseReference = firebaseDatabase.getReference("Mission");
 
         return fragmentView;
     }
@@ -127,7 +127,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                missionList = new ArrayList<>(); //mission list
+                missionList = new ArrayList<>();
                 for (DataSnapshot missionsnap: dataSnapshot.getChildren()) {
 
                     Mission mission = missionsnap.getValue(Mission.class); //mission class

@@ -384,15 +384,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
         else if (id == R.id.nav_mission) {
 
-            getSupportActionBar().setTitle("Mission");
+            getSupportActionBar().setTitle("My Missions");
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new SettingsFragment()).commit();
             
         }
         else if (id == R.id.nav_profile) {
 
-            getSupportActionBar().setTitle("Profile");
-            moveToNewActivity(); //the problem this method does not work might be it's not going from a fragment to an activity
-            //  getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfileFragment()).commit();
+            getSupportActionBar().setTitle("All Missions");
+           // moveToNewActivity(); //the problem this method does not work might be it's not going from a fragment to an activity
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfileFragment()).commit();
 
         }
         else if (id == R.id.nav_signout) {

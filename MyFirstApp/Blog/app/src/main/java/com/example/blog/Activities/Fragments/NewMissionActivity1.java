@@ -105,7 +105,7 @@ public class NewMissionActivity1 extends AppCompatActivity {
 
     private void addMission(Mission m) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Missions").push();
+        DatabaseReference myRef = database.getReference("Mission").push();
 
         //get post unique ID and update post key
         String key = myRef.getKey();
