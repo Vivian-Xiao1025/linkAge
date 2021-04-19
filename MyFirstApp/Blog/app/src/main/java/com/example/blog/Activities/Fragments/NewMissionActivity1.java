@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.blog.Activities.Home;
 import com.example.blog.Activities.MissionActivity;
 import com.example.blog.Activities.Models.Mission;
 import com.example.blog.R;
@@ -36,26 +37,21 @@ public class NewMissionActivity1 extends AppCompatActivity {
         author = FirebaseAuth.getInstance();
         curUser = author.getCurrentUser();
 
-        goBack();
-        nextPage();
-
         cancel = findViewById(R.id.cancel);
         next = findViewById(R.id.next_page);
 
+        goBack();
+        nextPage();
+
     }
 
-    private void goBack() {
+    public void goBack() {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backToMyPost();
+                startActivity(new Intent(NewMissionActivity1.this, Home.class));
             }
         });
-    }
-
-    private void backToMyPost() {
-        Intent intent = new Intent(this, MissionActivity.class);
-        startActivity(intent);
     }
 
     private void nextPage(){
@@ -87,23 +83,23 @@ public class NewMissionActivity1 extends AppCompatActivity {
                             description.getText().toString());
 
                     addMission(m);
+                    openSecondPage();
+
                 }
                 else {
                     showMessage("Please fill out all the fields before moving on");
                 }
-
-                openSecondPage();
 
             }
         });
     }
 
     private void openSecondPage() {
-        Intent intent = new Intent(this, NewMissionActivity2.class);
-        startActivity(intent);
+        startActivity(new Intent(NewMissionActivity1.this, SettingsFragment.class));
     }
 
     private void addMission(Mission m) {
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Mission").push();
 

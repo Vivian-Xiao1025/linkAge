@@ -1,4 +1,4 @@
-package com.example.blog.Activities;
+package com.example.blog.Activities.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,19 +35,17 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class PostDetailActivity extends AppCompatActivity {
+public class MissionDetailActivity extends AppCompatActivity {
 
-
-
-    ImageView imgPost,imgUserPost, imgCurrentUser;
-    TextView txtPostDesc, txtPostDateName, txtPostTitle;
+    ImageView imgCurrentUser;
+    TextView txtMissionDesc, txtMissionDateName, txtMissionTitle, txtMissionDate, txtMissionTime, txtMissionSpot, txtMissionLocation;
     EditText editTextComment;
     Button btnAddComment;
-    String PostKey;
+    String MissionKey;
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     FirebaseDatabase firebaseDatabase;
-    RecyclerView RvComment;
+    RecyclerView RvComment2;
     CommentAdapter commentAdapter;
     List<Comment> listComment;
     static String COMMENT_KEY = "Comment";
@@ -56,33 +54,33 @@ public class PostDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail);
+        setContentView(R.layout.activity_mission_detail);
 
         // let's set the statue bar background to transparent
         Window w = getWindow();
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         getSupportActionBar().hide();
-
 
         //ini Views
 
-        RvComment = findViewById(R.id.rv_comment);
+        RvComment2 = findViewById(R.id.rv_comment2);
 
-        imgPost = findViewById(R.id.post_detail_img);
-        imgUserPost = findViewById(R.id.post_detail_user_img);
-        imgCurrentUser = findViewById(R.id.post_detail_currentuser_img);
+        imgCurrentUser = findViewById(R.id.mission_detail_currentuser_img);
 
-        txtPostTitle = findViewById(R.id.post_detail_title);
-        txtPostDesc = findViewById(R.id.post_detail_desc);
-        txtPostDateName = findViewById(R.id.post_detail_date_name);
+        txtMissionTitle = findViewById(R.id.mission_detail_title);
+        txtMissionDesc = findViewById(R.id.mission_detail_desc);
+        txtMissionDateName = findViewById(R.id.mission_detail_date_name);
+        txtMissionDate = findViewById(R.id.mission_detail_date);
+        txtMissionTime = findViewById(R.id.mission_detail_time);
+        txtMissionSpot = findViewById(R.id.mission_detail_slots);
+        txtMissionLocation = findViewById(R.id.mission_detail_location);
 
-        editTextComment = findViewById(R.id.post_detail_comment);
-        btnAddComment = findViewById(R.id.post_detail_add_comment_btn);
+        editTextComment = findViewById(R.id.mission_detail_comment);
+        btnAddComment = findViewById(R.id.mission_detail_add_comment_btn);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-
 
         //add Comment button click listener
         btnAddComment.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +88,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 btnAddComment.setVisibility(View.INVISIBLE);
-                DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(PostKey).push();
+                DatabaseReference commentReference = firebaseDatabase.getReference(COMMENT_KEY).child(MissionKey).push();
                 String comment_content = editTextComment.getText().toString();
                 String uid = firebaseUser.getUid();
                 String uname = firebaseUser.getDisplayName();
@@ -122,22 +120,22 @@ public class PostDetailActivity extends AppCompatActivity {
         //we need to send post detail data to this activity first ...
         // now we can get post data
 
-        String postImage = getIntent().getExtras().getString("postImage");
-        Glide.with(this).load(postImage).into(imgPost);
+        String missionTitle = getIntent().getExtras().getString("title");
+        txtMissionTitle.setText(missionTitle);
 
-        String postTitle = getIntent().getExtras().getString("title");
-        txtPostTitle.setText(postTitle);
+        //String userpostImage = getIntent().getExtras().getString("userPhoto");
 
-        String userpostImage = getIntent().getExtras().getString("userPhoto");
+        String missionDescription = getIntent().getExtras().getString("description");
+        txtMissionDesc.setText(missionDescription);
 
-        if (userpostImage != null) {
-            Glide.with(this).load(userpostImage).into(imgUserPost);
-        }
-        else
-            Glide.with(this).load(R.drawable.avatar).into(imgUserPost);
+        String missionDate = getIntent().getExtras().getString("date");
+        txtMissionDate.setText(missionDate);
 
-        String postDescription = getIntent().getExtras().getString("description");
-        txtPostDesc.setText(postDescription);
+        String missionTime = getIntent().getExtras().getString("time");
+        txtMissionTime.setText(missionTime);
+
+        String missionSpot = getIntent().getExtras().getString("spots");
+        txtMissionSpot.setText(missionSpot);
 
         //set comment user image
         if (firebaseUser.getPhotoUrl() != null) {
@@ -147,21 +145,20 @@ public class PostDetailActivity extends AppCompatActivity {
             Glide.with(this).load(R.drawable.avatar).into(imgCurrentUser);
 
         //get post id
-        PostKey = getIntent().getExtras().getString("postKey");
+        MissionKey = getIntent().getExtras().getString("missionKey");
 
-        String date = timestampToString(getIntent().getExtras().getLong("postData"));
-        txtPostDateName.setText(date);
+        String date = timestampToString(getIntent().getExtras().getLong("missionData"));
+        txtMissionDateName.setText(date);
 
         //ini RecycleviewComment
         iniRvComment();
-
     }
 
     private void iniRvComment() {
 
-        RvComment.setLayoutManager(new LinearLayoutManager(this));
+        RvComment2.setLayoutManager(new LinearLayoutManager(this));
 
-        DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(PostKey);
+        DatabaseReference commentRef = firebaseDatabase.getReference(COMMENT_KEY).child(MissionKey);
         commentRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -174,7 +171,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
 
                 commentAdapter = new CommentAdapter(getApplicationContext(),listComment);
-                RvComment.setAdapter(commentAdapter);
+                RvComment2.setAdapter(commentAdapter);
 
             }
 
@@ -190,8 +187,6 @@ public class PostDetailActivity extends AppCompatActivity {
 
         Toast.makeText(this,message,Toast.LENGTH_LONG).show();
 
-
-
     }
 
     private String timestampToString(long time) {
@@ -201,14 +196,6 @@ public class PostDetailActivity extends AppCompatActivity {
         String date = DateFormat.format("dd-MM-yyyy",calendar).toString();
         return date;
 
-
-
     }
 
-
-
-
-
-
-
-}
+    }

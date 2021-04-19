@@ -134,7 +134,7 @@ public class NewMissionActivity2 extends AppCompatActivity {
                     }
                 });
 
-                submitPost();
+             //   submitPost();
 
             }
         });
@@ -172,15 +172,10 @@ public class NewMissionActivity2 extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backToPreviousPage();
+                startActivity(new Intent(NewMissionActivity2.this, NewMissionActivity1.class));
                 //TODO: If it goes back, need to alter database about the previous mission info
             }
         });
-    }
-
-    private void backToPreviousPage() {
-        Intent intent = new Intent(this, NewMissionActivity1.class);
-        startActivity(intent);
     }
 
     private void setupPopupImageClick() {

@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Title"
+        android:hint="Title of Your Story"
         app:layout_constraintEnd_toStartOf="@+id/popup_user_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
